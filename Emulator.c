@@ -15,14 +15,14 @@
 #define SWAP 7
 
 int stack[STACK_SIZE];
-int sp = -1;  // stack pointer
+int sp = -1; 
 
 unsigned char program[PROGRAM_SIZE];
 int program_size = 0;
 
 void push(int value) {
     if (sp >= STACK_SIZE - 1) {
-        printf("Stack Overflow\n");
+        printf("Stack overflow.\n");
         exit(1);
     }
     stack[++sp] = value;
@@ -30,14 +30,14 @@ void push(int value) {
 
 int pop() {
     if (sp < 0) {
-        printf("Stack Underflow\n");
+        printf("Stack underflow.\n");
         exit(1);
     }
     return stack[sp--];
 }
 
 void run() {
-    int pc = 0;  // program counter
+    int pc = 0;  
 
     while (pc < program_size) {
         unsigned char instr = program[pc];
@@ -62,7 +62,7 @@ void run() {
 
             case ADD:
                 if (sp < 1 || operand > sp) {
-                    printf("Invalid ADD\n");
+                    printf("Cannot perform addition.\n");
                     exit(1);
                 }
                 stack[sp] = stack[sp] + stack[operand];
@@ -71,7 +71,7 @@ void run() {
 
             case SUB:
                 if (sp < 1 || operand > sp) {
-                    printf("Invalid SUB\n");
+                    printf("Cannot perform subtraction\n");
                     exit(1);
                 }
                 stack[sp] = stack[sp] - stack[operand];
@@ -80,7 +80,7 @@ void run() {
 
             case JZ:
                 if (sp < 0) {
-                    printf("Stack empty for JZ\n");
+                    printf("Cannot jump to zero as the stack is empty.\n");
                     exit(1);
                 }
                 if (stack[sp] == 0)
@@ -95,7 +95,7 @@ void run() {
 
             case SWAP:
                 if (sp < 0 || operand > sp) {
-                    printf("Invalid SWAP\n");
+                    printf("Invalid swap.\n");
                     exit(1);
                 }
                 {
@@ -107,21 +107,21 @@ void run() {
                 break;
 
             default:
-                printf("Unknown instruction\n");
+                printf("Instruction not recognised.\n");
                 exit(1);
         }
     }
 }
 
 int main() {
-    program[0] = (PUSH << 5) | 5;   // 00100101
-    program[1] = (PUSH << 5) | 3;   // 00100011
-    program[2] = (ADD  << 5) | 0;   // 01100000
+    program[0] = (PUSH << 5) | 5;   
+    program[1] = (PUSH << 5) | 3;   
+    program[2] = (ADD  << 5) | 0;   
 
     program_size = 3;
 
     run();
 
-    printf("Top of stack: %d\n", stack[sp]);  // Should print 8
+    printf("Top of stack: %d\n", stack[sp]);  
     return 0;
 }
